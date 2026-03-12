@@ -66,21 +66,24 @@ export default function HeroSection({ portfolio }: { portfolio?: any }) {
 
         {/* --- NEW: Centered Text Overlay --- */}
         <div className="absolute z-20 flex flex-col items-center justify-center text-center px-4 pointer-events-none w-full max-w-5xl">
-            {/* Top cursive text */}
-            <p 
-              className="text-white text-3xl md:text-5xl mb-4 font-light tracking-wide drop-shadow-md"
-              style={{ fontFamily: "'Great Vibes', 'Dancing Script', 'Brush Script MT', cursive" }}
-            >
-              Wedding on Hornby Island
-            </p>
-            
-            {/* Main Title */}
-            <h1 className="text-white text-4xl md:text-6xl lg:text-7xl font-serif tracking-widest leading-tight uppercase drop-shadow-lg">
-              Grace & Scott's <span className="lowercase italic tracking-normal font-serif">featured</span>
-              <br />
-              Wedding Gallery
-            </h1>
-        </div>
+    {/* Top cursive text - The Emotional Slogan */}
+    <p 
+        className="text-white text-3xl md:text-5xl mb-4 font-light tracking-wide drop-shadow-md"
+        style={{ fontFamily: "'Great Vibes', 'Dancing Script', 'Brush Script MT', cursive" }}
+    >
+        Where every moment becomes a legacy
+    </p>
+    
+    {/* Main Title - The Brand Slogan */}
+    <h1 className="text-white text-4xl md:text-6xl lg:text-7xl font-serif tracking-widest leading-tight uppercase drop-shadow-lg">
+        Capturing <span className="lowercase italic tracking-normal font-serif text-yellow-500">the</span>
+        <br />
+        Extraordinary Soul
+    </h1>
+
+    {/* Optional: Minimal decorative line */}
+    <div className="mt-6 w-24 h-[1px] bg-white/40 shadow-xl"></div>
+</div>
 
         {/* Slide Pagination Dots */}
         {slideImages.length > 1 && (

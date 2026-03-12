@@ -79,8 +79,8 @@ export default function GalleryClient({ portfolio, gallery }: { portfolio: any, 
         {/* Header Section */}
         <div className="gallery-header max-w-3xl mb-24">
           <h1 className="text-[10px] font-black text-yellow-600 uppercase tracking-[0.6em] mb-6 block">Visual Record</h1>
-          <h2 className="text-6xl md:text-8xl font-black text-zinc-900 tracking-tighter uppercase leading-[0.85] mb-8">
-            The <br /> <span className="text-stone-300">Gallery</span>
+          <h2 className="text-4xl md:text-7xl font-black text-zinc-900 tracking-tighter uppercase leading-[0.85] mb-8">
+            The Gowtham 's <br /> <span className="text-stone-300">Gallery</span>
           </h2>
           {/* <p className="text-zinc-500 text-lg md:text-xl leading-relaxed font-medium">
             {portfolio?.bio || "A visual record of our journey showcasing completed works and on-site operations."}
@@ -138,9 +138,9 @@ export default function GalleryClient({ portfolio, gallery }: { portfolio: any, 
         )}
 
         <div className="mt-32 border-t border-stone-200 pt-12 flex flex-col md:flex-row justify-between items-center gap-8">
-          <p className="text-stone-400 font-mono text-[10px] uppercase tracking-widest">
-            © {new Date().getFullYear()} By {portfolio?.name || "Gowtham"}
-          </p>
+          <a href="https://portfolio-152578.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-stone-400 font-mono text-[10px] uppercase tracking-widest">
+            © {new Date().getFullYear()} BUILD By Hariharan Marudasamy  |All rights reserved |for contact information click here.
+          </a>
         </div>
       </div>
 
