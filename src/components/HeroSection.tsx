@@ -103,7 +103,7 @@ export default function HeroSection({ portfolio }: { portfolio?: any }) {
       <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent z-10 pointer-events-none" />
 
       {/* --- Dynamic Text Overlay at the Bottom Right --- */}
-      <div className="absolute bottom-10 right-1 md:right-16 z-20 flex flex-col items-end text-right px-4 pointer-events-none w-full max-w-5xl">
+      <div className="absolute bottom-20 right-1 md:right-16 z-20 flex flex-col items-end text-right px-4 pointer-events-none w-full max-w-5xl">
         {/* Slide Subtitle - The Emotional Slogan */}
         <p
           className="text-white text-xl md:text-3xl mb-3 font-light tracking-wide drop-shadow-md font-cursive"
