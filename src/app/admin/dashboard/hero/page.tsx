@@ -12,6 +12,9 @@ export default function HeroEditor() {
     // New states for file upload
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [title, setTitle] = useState("");
+    const [subtitle, setSubtitle] = useState("");
+    const [device, setDevice] = useState<'mobile' | 'desktop'>('desktop');
 
     const fetchHeroImages = () => {
         fetch("/api/hero")
@@ -43,6 +46,8 @@ export default function HeroEditor() {
     const clearSelection = () => {
         setImageFile(null);
         setPreviewUrl(null);
+        setTitle("");
+        setSubtitle("");
     };
 
     // Submit using FormData
@@ -54,10 +59,13 @@ export default function HeroEditor() {
         try {
             const token = localStorage.getItem("adminToken");
             
-            // Construct FormData for file upload
             const formData = new FormData();
+            console.log(`[FRONTEND-HERO] Uploading image for device: ${device}`);
             formData.append("image", imageFile);
-            formData.append("isActive", "true"); // Optional: matches the new API logic
+            formData.append("isActive", "true");
+            formData.append("device", device);
+            formData.append("title", title);
+            formData.append("subtitle", subtitle);
 
             const res = await fetch("/api/hero", {
                 method: "POST",
@@ -109,10 +117,44 @@ export default function HeroEditor() {
 
     return (
         <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 shadow-sm">
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white mb-6">Manage Hero Section</h1>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+                <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">Manage Hero Section</h1>
+                
+                {/* View Tabs */}
+                <div className="flex gap-2 p-1 bg-zinc-100 dark:bg-zinc-800 rounded-2xl w-fit">
+                    <button
+                        type="button"
+                        onClick={() => setDevice('desktop')}
+                        className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
+                            device === 'desktop' 
+                            ? 'bg-white dark:bg-zinc-900 shadow-sm text-zinc-900 dark:text-white' 
+                            : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                        }`}
+                    >
+                        <ImageIcon className="w-4 h-4" />
+                        Big Screen
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setDevice('mobile')}
+                        className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
+                            device === 'mobile' 
+                            ? 'bg-white dark:bg-zinc-900 shadow-sm text-zinc-900 dark:text-white' 
+                            : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                        }`}
+                    >
+                        <UploadCloud className="w-4 h-4" />
+                        Mobile Screen
+                    </button>
+                </div>
+            </div>
 
-            {/* Upload New Image Form */}
-            <form onSubmit={handleAddImage} className="mb-10 space-y-4">
+            {/* Upload Section - Contextual to Active Tab */}
+            <div className="mb-12 p-6 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-800 rounded-3xl">
+                <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-4">
+                    Add New {device === 'desktop' ? 'Desktop' : 'Mobile'} Slide
+                </h2>
+                <form onSubmit={handleAddImage} className="space-y-4">
                 <div className="flex flex-col md:flex-row gap-4">
                     <div className="flex-1">
                         {previewUrl ? (
@@ -145,29 +187,71 @@ export default function HeroEditor() {
                         )}
                     </div>
                     
-                    <div className="flex items-end">
+                    <div className="flex-1 space-y-4">
+                        <div>
+                            <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2 block">Slide Title</label>
+                            <input 
+                                type="text"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                placeholder="Enter bold heading..."
+                                className="w-full px-5 py-3 rounded-xl bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 focus:ring-2 focus:ring-zinc-900 dark:focus:ring-white outline-none transition-all"
+                            />
+                        </div>
+                        <div>
+                            <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2 block">Slide Subtitle</label>
+                            <input 
+                                type="text"
+                                value={subtitle}
+                                onChange={(e) => setSubtitle(e.target.value)}
+                                placeholder="Enter lowercase tagline..."
+                                className="w-full px-5 py-3 rounded-xl bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 focus:ring-2 focus:ring-zinc-900 dark:focus:ring-white outline-none transition-all"
+                            />
+                        </div>
+                        
                         <button 
                             type="submit" 
                             disabled={saving || !imageFile} 
-                            className="flex items-center gap-2 px-6 py-3 h-12 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black font-semibold hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all shadow-md active:scale-95 disabled:opacity-50 whitespace-nowrap"
+                            className="w-full flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black font-semibold hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all shadow-md active:scale-95 disabled:opacity-50 whitespace-nowrap"
                         >
                             {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Plus className="w-5 h-5" />}
-                            Upload Slide
+                            Upload {device === 'desktop' ? 'Desktop' : 'Mobile'} Slide
                         </button>
                     </div>
                 </div>
             </form>
+            </div>
 
-            {/* Current Images List */}
-            <div className="space-y-4">
-                <h2 className="text-lg font-semibold text-zinc-800 dark:text-zinc-200">Active Slides ({images.length})</h2>
-                {images.length === 0 ? (
-                    <p className="text-zinc-500 dark:text-zinc-400 text-sm">No hero images found. Upload one above.</p>
+            {/* Current Images List - Filtered by Active Tab */}
+            <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-bold text-zinc-800 dark:text-zinc-200">
+                        Active {device === 'desktop' ? 'Desktop' : 'Mobile'} Slides 
+                        <span className="ml-2 text-zinc-400 font-normal">({images.filter(img => (img.device || 'desktop') === device).length})</span>
+                    </h2>
+                </div>
+                
+                {images.filter(img => (img.device || 'desktop') === device).length === 0 ? (
+                    <div className="text-center py-20 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-3xl">
+                        < ImageIcon className="w-12 h-12 mx-auto mb-4 text-zinc-300" />
+                        <p className="text-zinc-500 dark:text-zinc-400 font-medium">No {device === 'desktop' ? 'Desktop' : 'Mobile'} slides found.</p>
+                    </div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {images.map((img) => (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {images.filter(img => (img.device || 'desktop') === device).map((img) => (
                             <div key={img._id} className="group relative rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-black aspect-video">
                                 <img src={img.imageUrl} alt="Hero slide" className="w-full h-full object-cover" />
+                                
+                                {/* Device Badge */}
+                                <div className="absolute top-3 left-3 z-10">
+                                    <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm border ${
+                                        img.device === 'mobile' 
+                                        ? 'bg-indigo-500/90 text-white border-indigo-400' 
+                                        : 'bg-zinc-800/90 text-white border-zinc-700'
+                                    }`}>
+                                        {img.device === 'mobile' ? 'Mobile' : 'Desktop'}
+                                    </span>
+                                </div>
                                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                     <button 
                                         onClick={() => handleDelete(img._id)}

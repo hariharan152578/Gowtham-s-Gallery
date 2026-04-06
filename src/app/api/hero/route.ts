@@ -26,9 +26,14 @@ export async function POST(req: Request) {
         const formData = await req.formData();
         const imageFile = formData.get("image") as File | null;
         
-        // Optional: Allow passing an active state, defaults to true
+        // Optional: Allow passing an active state and device type
         const isActiveStr = formData.get("isActive") as string;
         const isActive = isActiveStr === "false" ? false : true;
+        const device = (formData.get("device") as string) || "desktop";
+        const title = formData.get("title") as string || "";
+        const subtitle = formData.get("subtitle") as string || "";
+        
+        console.log(`[API-HERO] Uploading to device category: ${device}`);
 
         if (!imageFile) {
             return NextResponse.json({ message: "No image file provided" }, { status: 400 });
@@ -52,8 +57,13 @@ export async function POST(req: Request) {
             imageUrl: uploadResult.secure_url,
             publicId: uploadResult.public_id,
             isActive: isActive,
+            device: device,
+            title: title,
+            subtitle: subtitle,
         });
 
+        console.log(`[API-HERO] Saved hero image with device: ${newHeroImage.device}`);
+        
         return NextResponse.json({ message: "Hero image uploaded successfully", data: newHeroImage }, { status: 201 });
 
     } catch (error) {

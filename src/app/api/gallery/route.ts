@@ -5,7 +5,7 @@ import cloudinary from "@/lib/cloudinary";
 import { verifyToken } from "@/lib/jwt";
 import sharp from "sharp";
 
-// Increase timeout for large image processing (Vercel/Next.js)
+
 export const maxDuration = 60; 
 
 export async function GET() {

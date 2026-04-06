@@ -169,11 +169,11 @@ export default function PortfolioEditor() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Instagram Link</label>
+                        <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Personal ID Link</label>
                         <input name="instagram" value={formData.instagram} onChange={handleChange} className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-black border border-zinc-200 dark:border-zinc-800 focus:ring-2 focus:ring-zinc-900 dark:focus:ring-white transition-all shadow-sm outline-none" />
                     </div>
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Facebook Link</label>
+                        <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Commercial ID Link</label>
                         <input name="facebook" value={formData.facebook} onChange={handleChange} className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-black border border-zinc-200 dark:border-zinc-800 focus:ring-2 focus:ring-zinc-900 dark:focus:ring-white transition-all shadow-sm outline-none" />
                     </div>
                 </div>
