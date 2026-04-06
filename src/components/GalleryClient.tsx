@@ -169,8 +169,8 @@ export default function GalleryClient({ portfolio, gallery: initialGallery }: { 
                 onDoubleClick={(e) => handleDoubleTap(e, item._id)}
                 className={`gallery-item group relative overflow-hidden bg-zinc-100 cursor-pointer transition-all duration-500 rounded-sm
                   ${item.size === 'large' || item.size === 'medium' 
-                    ? 'md:col-span-2 aspect-[2.8/2]' // Landscape 3:2
-                    : 'md:col-span-1 aspect-2/3' // Portrait 2:3
+                    ? 'col-span-2 aspect-[2.8/2]' // Landscape 3:2
+                    : 'col-span-1 aspect-2/3' // Portrait 2:3
                   }
                 `}
               >
