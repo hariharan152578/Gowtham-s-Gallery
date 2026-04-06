@@ -26,6 +26,20 @@ export default function GalleryClient({ portfolio, gallery: initialGallery }: { 
   React.useEffect(() => {
     const saved = localStorage.getItem("gowtham_gallery_likes");
     if (saved) setLikedIds(JSON.parse(saved));
+    
+    // Fetch latest gallery data on mount to get up-to-date likes/info
+    const fetchLatest = async () => {
+      try {
+        const res = await fetch("/api/gallery");
+        const json = await res.json();
+        if (res.ok && json.data) {
+          setGallery(json.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch fresh gallery data", err);
+      }
+    };
+    fetchLatest();
   }, []);
 
   const handleLike = async (e: React.MouseEvent, id: string) => {
@@ -41,8 +55,8 @@ export default function GalleryClient({ portfolio, gallery: initialGallery }: { 
           localStorage.setItem("gowtham_gallery_likes", JSON.stringify(next));
           return next;
         });
-        // Update local gallery data to show count change
-        setGallery(prev => prev.map(item => item._id === id ? { ...item, likes: (item.likes || 0) + 1 } : item));
+        // Update local gallery data to show count change from server
+        setGallery(prev => prev.map(item => item._id === id ? { ...item, likes: data.likes } : item));
         
         // If the liked image is open in lightbox, update it too
         if (selectedImg?._id === id) {
@@ -140,7 +154,7 @@ export default function GalleryClient({ portfolio, gallery: initialGallery }: { 
         {/* Header Section */}
         <div className="gallery-header max-w-3xl mb-24">
           <h1 className="text-[11px] font-bold text-accent-2 uppercase tracking-[0.5em] mb-6 block font-sans">Visual Record</h1>
-          <h2 className="text-4xl md:text-7xl font-serif font-black text-foreground tracking-tight uppercase leading-[0.9] mb-8">
+          <h2 className="text-3xl md:text-5xl font-serif font-black text-foreground tracking-tight uppercase leading-[0.9] mb-8">
             The Gowtham 's <br /> <span className="text-zinc-300 dark:text-zinc-800">Gallery</span>
           </h2>
         </div>

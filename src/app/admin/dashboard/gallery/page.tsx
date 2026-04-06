@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { toast } from "react-hot-toast";
-import { Loader2, Plus, Trash2, Upload, X } from "lucide-react";
+import { Loader2, Plus, Trash2, Upload, X, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function GalleryManagement() {
@@ -129,11 +129,15 @@ export default function GalleryManagement() {
                         <img src={img.imageUrl} alt={img.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
 
                         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-6">
-                            <div className="flex justify-end">
-                                <button onClick={() => handleDelete(img._id)} className="p-3 bg-red-500 hover:bg-red-600 text-white rounded-full shadow-lg transition-transform hover:scale-110 active:scale-95">
-                                    <Trash2 className="w-5 h-5" />
-                                </button>
-                            </div>
+                                <div className="flex gap-2">
+                                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-black/40 backdrop-blur-md rounded-full border border-white/10 text-white shadow-sm">
+                                        <Heart className="w-3.5 h-3.5 fill-red-500 text-red-500" />
+                                        <span className="text-xs font-bold">{img.likes || 0}</span>
+                                    </div>
+                                    <button onClick={() => handleDelete(img._id)} className="p-3 bg-red-500 hover:bg-red-600 text-white rounded-full shadow-lg transition-transform hover:scale-110 active:scale-95">
+                                        <Trash2 className="w-5 h-5" />
+                                    </button>
+                                </div>
                             <div>
                                 <h3 className="text-white font-bold text-xl">{img.title}</h3>
                                 {img.category && (

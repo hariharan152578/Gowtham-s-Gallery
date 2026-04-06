@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { Camera } from "lucide-react";
 
 export default function HeroSection({ portfolio }: { portfolio?: any }) {
@@ -102,7 +103,7 @@ export default function HeroSection({ portfolio }: { portfolio?: any }) {
       <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent z-10 pointer-events-none" />
 
       {/* --- Dynamic Text Overlay at the Bottom Right --- */}
-      <div className="absolute bottom-1 right-1 md:right-16 z-20 flex flex-col items-end text-right px-4 pointer-events-none w-full max-w-5xl">
+      <div className="absolute bottom-10 right-1 md:right-16 z-20 flex flex-col items-end text-right px-4 pointer-events-none w-full max-w-5xl">
         {/* Slide Subtitle - The Emotional Slogan */}
         <p
           className="text-white text-xl md:text-3xl mb-3 font-light tracking-wide drop-shadow-md font-cursive"
@@ -127,8 +128,8 @@ export default function HeroSection({ portfolio }: { portfolio?: any }) {
               key={idx}
               onClick={() => setCurrentIndex(idx)}
               className={`rounded-full transition-all duration-300 ${idx === currentIndex
-                  ? "w-4 h-3 bg-accent shadow-[0_0_10px_rgba(202,138,4,0.5)]"
-                  : "w-3 h-3 bg-white/40 hover:bg-white/70"
+                ? "w-4 h-3 bg-accent shadow-[0_0_10px_rgba(202,138,4,0.5)]"
+                : "w-3 h-3 bg-white/40 hover:bg-white/70"
                 }`}
               aria-label={`Go to slide ${idx + 1}`}
             />
