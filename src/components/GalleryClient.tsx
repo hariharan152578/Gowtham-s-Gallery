@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Heart, Share2, Maximize2, X, Settings } from "lucide-react";
+import { Heart, Share2, Maximize2, X, Settings, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import HeroSection from "./HeroSection";
@@ -41,6 +41,32 @@ export default function GalleryClient({ portfolio, gallery: initialGallery }: { 
     };
     fetchLatest();
   }, []);
+
+  // Handle Keyboard Navigation
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!selectedImg) return;
+      if (e.key === "ArrowRight") handleNext();
+      if (e.key === "ArrowLeft") handlePrev();
+      if (e.key === "Escape") closeLightbox();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedImg, gallery]);
+
+  const handleNext = () => {
+    if (!selectedImg || !gallery) return;
+    const currentIndex = gallery.findIndex(item => item._id === selectedImg._id);
+    const nextIndex = (currentIndex + 1) % gallery.length;
+    setSelectedImg(gallery[nextIndex]);
+  };
+
+  const handlePrev = () => {
+    if (!selectedImg || !gallery) return;
+    const currentIndex = gallery.findIndex(item => item._id === selectedImg._id);
+    const prevIndex = (currentIndex - 1 + gallery.length) % gallery.length;
+    setSelectedImg(gallery[prevIndex]);
+  };
 
   const handleLike = async (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
@@ -258,15 +284,36 @@ export default function GalleryClient({ portfolio, gallery: initialGallery }: { 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-100 flex items-center justify-center bg-zinc-950/98 p-4 md:p-12 backdrop-blur-md"
+            className="fixed inset-0 z-100 flex items-center justify-center bg-white/98 p-4 md:p-12 backdrop-blur-xl"
             onClick={closeLightbox}
           >
-            <button className="absolute top-6 right-6 text-white group flex items-center gap-3 z-50">
+            <button 
+              className="absolute top-6 right-6 text-zinc-900 group flex items-center gap-3 z-50 p-2"
+              onClick={closeLightbox}
+            >
                <span className="text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Close Esc</span>
-               <div className="w-12 h-12 border border-white/10 rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
+               <div className="w-12 h-12 border border-zinc-200 rounded-full flex items-center justify-center group-hover:bg-zinc-900 group-hover:text-white transition-all shadow-sm">
                  <X className="w-5 h-5" />
                </div>
             </button>
+
+            {/* Navigation Buttons */}
+            <div className="absolute inset-x-2 md:inset-x-12 top-1/2 -translate-y-1/2 flex justify-between pointer-events-none z-40">
+              <button 
+                onClick={(e) => { e.stopPropagation(); handlePrev(); }}
+                className="md:w-14 md:h-14 w-10 h-10 rounded-full bg-white/80 border border-zinc-200 flex items-center justify-center text-zinc-900 hover:bg-zinc-900 hover:text-white transition-all pointer-events-auto shadow-xl group active:scale-95"
+                title="Previous"
+              >
+                <ChevronLeft className="w-6 h-6 group-hover:-translate-x-0.5 transition-transform" />
+              </button>
+              <button 
+                onClick={(e) => { e.stopPropagation(); handleNext(); }}
+                className="md:w-14 md:h-14 w-10 h-10 rounded-full bg-white/80 border border-zinc-200 flex items-center justify-center text-zinc-900 hover:bg-zinc-900 hover:text-white transition-all pointer-events-auto shadow-xl group active:scale-95"
+                title="Next"
+              >
+                <ChevronRight className="w-6 h-6 group-hover:translate-x-0.5 transition-transform" />
+              </button>
+            </div>
 
             <motion.div 
               initial={{ scale: 0.9, y: 20 }}
@@ -289,36 +336,37 @@ export default function GalleryClient({ portfolio, gallery: initialGallery }: { 
                       <span className="text-accent text-xs font-bold uppercase tracking-[0.4em] font-sans">
                         {selectedImg.category || "Project"}
                       </span>
-                      <h3 className="text-white text-4xl font-serif font-black uppercase tracking-tighter mt-2 leading-none">
+                      <h3 className="text-zinc-900 text-2xl font-serif font-black uppercase tracking-tighter mt-2 leading-none">
                         {selectedImg.title}
                       </h3>
+                       <div className="space-y-4">
+                  <h4 className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest font-sans">Project Detail</h4>
+                  <p className="text-zinc-600 text-base leading-relaxed font-medium">
+                    {selectedImg.description && selectedImg.description.trim() !== "" 
+                      ? selectedImg.description 
+                      : "A visual record of architectural precision and design aesthetics by Gowtham."}
+                  </p>
+                </div>
                     </div>
                     <div className="flex flex-col gap-4">
                         <button 
-                            onClick={(e) => handleLike(e, selectedImg._id)}
-                            className={`p-3 rounded-full border transition-all ${likedIds.includes(selectedImg._id) ? 'bg-red-500 border-red-500 text-white' : 'border-white/10 text-white hover:bg-white/10'}`}
+                            onClick={(e) => { e.stopPropagation(); handleLike(e, selectedImg._id); }}
+                            className={`p-3 rounded-full border relative transition-all shadow-sm ${likedIds.includes(selectedImg._id) ? 'bg-red-500 border-red-500 text-white' : 'border-zinc-200 text-zinc-900 hover:bg-zinc-100'}`}
                         >
+                            <span className="text-[10px] font-bold absolute top-0 right-0 mt-0 mr-0 bg-black px-1 rounded-full text-white uppercase tracking-widest z-10 font-sans">{selectedImg.likes || 0}</span>
                             <Heart className={`w-5 h-5 ${likedIds.includes(selectedImg._id) ? 'fill-current' : ''}`} />
                         </button>
                         <button 
-                            onClick={(e) => handleShare(e, selectedImg)}
-                            className="p-3 rounded-full border border-white/10 text-white hover:bg-white/10 transition-all"
+                            onClick={(e) => { e.stopPropagation(); handleShare(e, selectedImg); }}
+                            className="p-3 rounded-full border border-zinc-200 text-zinc-900 hover:bg-zinc-100 transition-all shadow-sm"
                         >
                             <Share2 className="w-5 h-5" />
                         </button>
                     </div>
                 </div>
                 
-                <div className="flex items-center gap-4">
-                    <div className="px-4 py-2 bg-white/5 rounded-full border border-white/10">
-                        <span className="text-white text-sm font-bold">{selectedImg.likes || 0} Likes</span>
-                    </div>
-                </div>
-
-                <div className="h-px w-16 bg-yellow-500/50" />
-                <p className="text-zinc-400 text-sm leading-relaxed font-medium">
-                  {selectedImg.description || "A visual representation of architectural precision and design."}
-                </p>
+                <div className="h-px w-24 bg-zinc-900/10" />
+               
               </div>
             </motion.div>
           </motion.div>
