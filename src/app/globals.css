@@ -2,10 +2,14 @@
 
 /* Force consistent light theme background as requested */
 :root {
-  --background: #fafaf9; /* stone-50 */
-  --foreground: #18181b; /* zinc-900 */
-  --accent: #ca8a04;     /* gold */
-  --accent-2: #8B1A1A;   /* Maroon */
+  --background: #fafaf9;
+  /* stone-50 */
+  --foreground: #18181b;
+  /* zinc-900 */
+  --accent: #ca8a04;
+  /* gold */
+  --accent-2: #8B1A1A;
+  /* Maroon */
 }
 
 @theme inline {
@@ -13,7 +17,7 @@
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
   --color-accent-2: var(--accent-2);
-  
+
   --font-sans: var(--font-sans), ui-sans-serif, system-ui;
   --font-serif: var(--font-serif), ui-serif, Georgia, serif;
   --font-cursive: var(--font-cursive), cursive;
@@ -26,10 +30,24 @@ body {
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-serif);
 }
 
 .font-cursive {
   font-family: var(--font-cursive);
+}
+
+
+
+.playfair-display-about {
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }

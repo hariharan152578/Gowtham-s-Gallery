@@ -43,11 +43,11 @@ export default function ProfileSection({ portfolio }: { portfolio: any }) {
   return (
     <section ref={containerRef} className="py-20 px-6 md:px-6 bg-background text-foreground overflow-hidden">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 lg:gap-32 items-start">
+        {/* Profile Image Area */}
+        <div className="profile-img w-full md:w-1/2">
         <h2 className="text-neutral-900 text-3xl md:text-6xl font-light tracking-wide drop-shadow-md font-cursive">
           About me
         </h2>
-        {/* Profile Image Area */}
-        <div className="profile-img w-full md:w-1/2">
           <div className="profile-img-inner aspect-3/4 md:aspect-4/5 overflow-hidden bg-[#F5F5F5]">
             <img
               src={portfolio?.profileImage || "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2071&auto=format&fit=crop"}
@@ -58,12 +58,11 @@ export default function ProfileSection({ portfolio }: { portfolio: any }) {
         </div>
 
         {/* Profile Content Area */}
-        <div className="profile-content w-full md:w-1/2 pt-4">
+        <div className="profile-content w-full md:w-1/2 pt-4 mt-10">
           {/* Section Title */}
-
-
+ 
           <div className="space-y-8 max-w-lg">
-            <p className="text-base text-justify md:text-lg leading-relaxed font-medium text-foreground/80 font-sans">
+            <p className="text-base text-justify md:text-lg leading-relaxed font-about text-foreground/80">
               {portfolio?.bio || "I specialize in wedding and portrait photography, capturing the raw emotions and intimate moments that make each story unique."}
             </p>
           </div>
